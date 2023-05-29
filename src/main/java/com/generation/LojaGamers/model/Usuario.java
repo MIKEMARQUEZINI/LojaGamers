@@ -1,6 +1,5 @@
 package com.generation.LojaGamers.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -8,7 +7,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -36,10 +34,6 @@ public class Usuario {
     @NotBlank(message = "O Tipo do Usuario é obrigatório")
     private String tipoUsuario;
 
-    @NotNull(message = "A Data de Nascimento do Usuario é obrigatória")
-    @Column(name = "data_nascimento")
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate dataNascimento;
 
     public List<Produto> getProduto() {
         return produto;
@@ -49,7 +43,7 @@ public class Usuario {
         this.produto = produto;
     }
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
     @JsonIgnoreProperties("usuario")
     private List<Produto> produto;
 
@@ -103,12 +97,6 @@ public class Usuario {
         this.tipoUsuario = tipoUsuario;
     }
 
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
 
-    public void setDataNascimento(LocalDate dataNascimento) {
-        this.dataNascimento = dataNascimento;
-    }
 
 }

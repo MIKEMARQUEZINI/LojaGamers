@@ -13,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.Optional;
 
 @Service
@@ -34,9 +32,6 @@ public class UsuarioService {
         if (usuarioRepository.findByUsuario(usuario.getUsuario()).isPresent())
             return Optional.empty();
 
-        if (checarIdade(usuario.getDataNascimento()) < 18)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário menor de idade!", null);
-
         usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
         return Optional.of(usuarioRepository.save(usuario));
@@ -51,9 +46,6 @@ public class UsuarioService {
             if ((buscaUsuario.isPresent()) && (buscaUsuario.get().getId() != usuario.getId()))
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário já existe!", null);
 
-            if (checarIdade(usuario.getDataNascimento()) < 18)
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Usuário menor de idade!", null);
-
             usuario.setSenha(criptografarSenha(usuario.getSenha()));
 
             return Optional.ofNullable(usuarioRepository.save(usuario));
@@ -62,10 +54,6 @@ public class UsuarioService {
 
         return Optional.empty();
 
-    }
-
-    private int checarIdade(LocalDate dataNascimento) {
-        return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
 
     public Optional<UsuarioLogin> autenticarUsuario(Optional<UsuarioLogin> usuarioLogin) {
@@ -84,8 +72,6 @@ public class UsuarioService {
                 usuarioLogin.get().setId(usuario.get().getId());
                 usuarioLogin.get().setNome(usuario.get().getNome());
                 usuarioLogin.get().setFoto(usuario.get().getFoto());
-                usuarioLogin.get().setTipoUsuario(usuario.get().getTipoUsuario());
-                usuarioLogin.get().setDataNascimento(usuario.get().getDataNascimento());
                 usuarioLogin.get().setSenha("");
                 usuarioLogin.get().setToken(gerarToken(usuarioLogin.get().getUsuario()));
 
@@ -106,4 +92,3 @@ public class UsuarioService {
         return encoder.encode(senha);
     }
 }
-
