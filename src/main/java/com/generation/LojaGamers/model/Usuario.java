@@ -35,6 +35,10 @@ public class Usuario {
     private String tipoUsuario;
 
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
+    @JsonIgnoreProperties("usuario")
+    private List<Produto> produto;
+
     public List<Produto> getProduto() {
         return produto;
     }
@@ -42,10 +46,6 @@ public class Usuario {
     public void setProduto(List<Produto> produto) {
         this.produto = produto;
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "usuario", cascade = CascadeType.REMOVE)
-    @JsonIgnoreProperties("usuario")
-    private List<Produto> produto;
 
     /* Insira os Getters and Setters */
 
