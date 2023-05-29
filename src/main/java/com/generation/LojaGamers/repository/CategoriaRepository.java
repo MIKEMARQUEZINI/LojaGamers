@@ -1,13 +1,12 @@
 package com.generation.LojaGamers.repository;
 
-import java.util.List;
-
+import com.generation.LojaGamers.model.Categoria;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.generation.LojaGamers.model.Categoria;
+import java.util.List;
 
 public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
-	
+
 	public List<Categoria> findAllByTipoContainingIgnoreCase(String tipo);
 
 }
