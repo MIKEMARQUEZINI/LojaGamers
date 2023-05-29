@@ -1,14 +1,12 @@
 package com.generation.LojaGamers.repository;
 
-import java.util.List;
-
+import com.generation.LojaGamers.model.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.generation.LojaGamers.model.Produto;
+import java.util.List;
 
 public interface ProdutoRepository extends JpaRepository<Produto, Long>{
-	
+
 	public List<Produto> findAllByNomeContainingIgnoreCase(String nome);
 
-	
 }
